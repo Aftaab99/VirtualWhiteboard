@@ -4,31 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>
-        Whiteboard
-    </title>
-
-    <link href="./css/index.css" rel='stylesheet'>
-
+    <title>Whiteboard</title>
+    <link href="/public/css/index.css" rel='stylesheet'>
 </head>
 
 <body>
-    <div class="header">
-        <h1 id='main-heading'>Collabrative Virtual Whiteboard</h1>
-        <div>
-            <span class="pallette-btn" style="background:black;">&nbsp;</span>
-            <span class="pallette-btn" style="background:red;">&nbsp;</span>
-            <span class="pallette-btn" style="background:blue;">&nbsp;</span>
-            <span class="pallette-btn" style="background:green;">&nbsp;</span>
-            <span class="pallette-btn" style="background:yellow;">&nbsp;</span>
-            <span class="pallette-btn" style="background:orange;">&nbsp;</span>
-            <span class="pallette-btn" style="background:violet;">&nbsp;</span>
+    <center>
+        <div id='create-room-block'>
+            <h1>Collaborative virtual whiteboard</h1>
+            <input type='text' id='host-name' placeholder="Your name" />
+            <button id='create-room-btn'>Create room</button>
+
+            <div id='room-link-container'>
+                <input id="room-link" value="https://somerandomhost.tld/routes?queryparams" size="75" readonly/>
+                <button id="copy-link-btn">
+                    <i class="fa fa-clone" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
-    </div>
-    <hr>
-    <canvas id="canvas"></canvas>
-    <script src="./js/draw.js"></script>
+    </center>
+
+    <script src="https://kit.fontawesome.com/d1af05a953.js" crossorigin="anonymous"></script>
+    <script src='/public/js/index.js'></script>
 </body>
 
 </html>

@@ -1,27 +1,11 @@
-.pallette-btn {
-    border-radius: 5px;
-    border-color: gray;
-    border-style: solid;
-    border-width: 1px;
-    font-size: 30px;
-    padding-left: 30px;
-    background-color: red;
-    cursor:pointer;
-
+#create-room-block {
+    padding-top: 5%;
 }
 
-body {
-    height: 100%;
-    overflow: hidden;
+#room-link-container {
+    padding-top: 25px;
 }
 
-.header {
-    margin-left: 3%;
-    margin-right: 3%;
-}
-
-
-#main-heading {
-    padding-top: 10px;
-    display: block;
+#copy-link-btn {
+    padding-left: 8px;
 }
