@@ -2,7 +2,7 @@ const http = require('http');
 const uuid = require('uuid');
 const fs = require('fs');
 const path = require('path');
-// const regex = require("regex");
+const config = require('./config')
 
 const whiteboardPattern = new RegExp('/whiteboard/(.*)');
 const jsFilesPattern = new RegExp('/public/js/(.*\.js)');
@@ -38,7 +38,8 @@ const server = http.createServer((req, res) => {
     if (req.url == '/') {
         fs.readFile(path.join(path.dirname(__filename), 'public', 'index.html'), 'utf8', (err, content) => {
             if (err) {
-                throw err;
+                res.writeHead(404);
+                res.end('File not found');
             }
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.end(content);
@@ -57,8 +58,6 @@ const server = http.createServer((req, res) => {
             res.writeHead(200, { 'Content-Type': 'text/html' })
             res.end(content);
         })
-
-
     }
 
     if (req.url == '/create-room') {
@@ -68,9 +67,9 @@ const server = http.createServer((req, res) => {
             rooms_set.add(room_id);
             rooms.push({ room_id: room_id, ips: [client_addr] })
             clients.set(client_addr, room_id)
-
+            console.log('returning '+room_id)
             res.writeHead(200, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ room_id: room_id, err: false }))
+            res.end(JSON.stringify({ room_id: room_id, err: false, url: `http:\\\\${config.SERVER_HOSTNAME}:${config.PORT}\\whiteboard\\${room_id}` }))
         }
         else {
             res.writeHead(200, { 'Content-Type': 'application/json' })
@@ -81,20 +80,22 @@ const server = http.createServer((req, res) => {
         }
         console.log(clients)
     }
-
-    // res.writeHead(404, {'Content-Type': 'application/json'});
-    // res.end()
-
-
 })
+
+const websocketServer = http.createServer((req, res)=>{
+    if(req.url=='/connect-room'){
+        clients.add()
+    }
+});
 
 const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
     console.log('new connection');
+
     socket.on('send-data', (data) => {
         console.log(data);
     })
 });
-
-server.listen(5000, 'localhost', () => { console.log('Listening on port 5000') });
+console.log(config.PORT);
+server.listen(config.PORT, config.SERVER_HOSTNAME, () => { console.log('Listening on port 5000') });

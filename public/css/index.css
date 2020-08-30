@@ -9,3 +9,8 @@
 #copy-link-btn {
     padding-left: 8px;
 }
+
+#room-link-container, #err-message {
+    visibility: hidden;
+}
+

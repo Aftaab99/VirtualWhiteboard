@@ -14,9 +14,11 @@
             <h1>Collaborative virtual whiteboard</h1>
             <input type='text' id='host-name' placeholder="Your name" />
             <button id='create-room-btn'>Create room</button>
-
+            <div id='err-message'>
+                
+            </div>
             <div id='room-link-container'>
-                <input id="room-link" value="https://somerandomhost.tld/routes?queryparams" size="75" readonly/>
+                <input id="room-link" value="" size="75"/>
                 <button id="copy-link-btn">
                     <i class="fa fa-clone" aria-hidden="true"></i>
                 </button>

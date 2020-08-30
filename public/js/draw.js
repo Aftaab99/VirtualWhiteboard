@@ -6,30 +6,39 @@ var stroke_color = 'black';
 
 window.addEventListener('load', () => {
 
+    const socket = io();
+    function sendWhiteboardData() {
+        socket.emit("send-data", "Hello from client " + (++c))
+    }
+    let interval = null;
+
+    let c = 0;
     // resizeWithoutClearing();
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     document.addEventListener('mousedown', (event) => {
         keeping_painting = true;
+        if(interval==null)
+            interval = setInterval(sendWhiteboardData, 250);
         coords.x = event.clientX - canvas.offsetLeft;
         coords.y = event.clientY - canvas.offsetTop;
         ctx.beginPath();
         ctx.moveTo(coords.x, coords.y);
-
     });
 
     document.querySelectorAll('.pallette-btn').forEach(item => {
-        // console.log('yoooo')
         item.addEventListener('click', event => {
-            console.log('COlor: ' + event.target.style.backgroundColor)
             stroke_color = event.target.style.backgroundColor;
         })
     })
 
-
     document.addEventListener('mouseup', (event) => {
         keeping_painting = false;
         ctx.closePath();
+        if(interval){
+            clearInterval(interval);
+            interval = null;
+        }
     });
     document.addEventListener('mousemove', (event) => {
         if (!keeping_painting) return;
@@ -58,6 +67,7 @@ window.addEventListener('load', () => {
         canvas.height = window.innerHeight;
         ctx.drawImage(temp_canvas, 0, 0);
     }
+
 });
 
 
