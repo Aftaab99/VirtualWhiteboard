@@ -1,5 +1,4 @@
-
-class PriorityQueue {
+export default class PriorityQueue {
 
     constructor() {
         this.currentSize = 0;
@@ -101,24 +100,4 @@ class PriorityQueue {
         console.log(this.heap)
     }
 }
-
-
-let pq = new PriorityQueue();
-console.log(pq.peek())
-console.log(pq.isEmpty())
-pq.add({ some_token: null, time: 101 })
-pq.add({ some_token: null, time: 102 })
-pq.add({ some_token: null, time: 92 })
-pq.add({ some_token: null, time: 102 })
-pq.add({ some_token: null, time: 132 })
-pq.add({ some_token: null, time: 42 })
-pq._print()
-console.log(pq.lastNode)
-console.log(pq.pop())
-console.log(pq.pop())
-console.log(pq.pop())
-console.log(pq.pop())
-console.log(pq.pop())
-console.log(pq.pop())
-
 

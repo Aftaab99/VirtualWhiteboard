@@ -4,16 +4,17 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./config')
 
-const whiteboardPattern = new RegExp('/whiteboard/(.*)');
-const jsFilesPattern = new RegExp('/public/js/(.*\.js)');
-const cssFilesPattern = new RegExp('/public/css/(.*\.css)');
+const whiteboardPattern = /\/whiteboard\?roomId=(.*)/
+const jsFilesPattern =  /\/public\/js\/(.*\.js)/  //new RegExp('/public/js/(.*\.js)');
+const cssFilesPattern = /\/public\/css\/(.*\.css)/
 
 const rooms = new Array();
+const latestRoomState = new Map();
 const rooms_set = new Set();
 const clients = new Map();
 
 const server = http.createServer((req, res) => {
-
+    console.log(req.url)
     if (jsFilesPattern.test(req.url)) {
                 fs.readFile(path.join(path.dirname(__filename), 'public', 'js', path.basename(req.url)), 'utf8', (err, content) => {
             if (err) {
@@ -47,6 +48,7 @@ const server = http.createServer((req, res) => {
     }
 
     if (matched = whiteboardPattern.exec(req.url)) {
+        console.log('whiteboard fine.....\n\n\n\n')
         if (!rooms_set.has(matched[1])) {
             res.writeHead(404)
             res.end();
@@ -69,7 +71,7 @@ const server = http.createServer((req, res) => {
             clients.set(client_addr, room_id)
             console.log('returning '+room_id)
             res.writeHead(200, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ room_id: room_id, err: false, url: `http:\\\\${config.SERVER_HOSTNAME}:${config.PORT}\\whiteboard\\${room_id}` }))
+            res.end(JSON.stringify({ room_id: room_id, err: false, url: `http:\\\\${config.SERVER_HOSTNAME}:${config.PORT}\\whiteboard?roomId=${room_id}` }))
         }
         else {
             res.writeHead(200, { 'Content-Type': 'application/json' })
@@ -91,11 +93,18 @@ const websocketServer = http.createServer((req, res)=>{
 const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
-    console.log('new connection');
+    socket.on('create-room', (roomId)=>{
+        socket.join(roomId);
+        if(latestRoomState.has(roomId)){
+            socket.emit('set-initial-whiteboard', latestRoomState.get(roomId));
+        }
+    })
 
     socket.on('send-data', (data) => {
-        console.log(data);
-    })
+        console.log(`Received data from ${data.roomId} at ${data.time}`);
+        latestRoomState.set(data.roomId, data.data);
+        socket.broadcast.to(data.roomId).emit('receive-data', data);
+    });
 });
 console.log(config.PORT);
 server.listen(config.PORT, config.SERVER_HOSTNAME, () => { console.log('Listening on port 5000') });
