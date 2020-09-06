@@ -17,13 +17,33 @@
     <div class="header">
         <h1 id='main-heading'>Collabrative Virtual Whiteboard</h1>
         <div>
-            <span class="pallette-btn" style="background:black;">&nbsp;</span>
-            <span class="pallette-btn" style="background:red;">&nbsp;</span>
-            <span class="pallette-btn" style="background:blue;">&nbsp;</span>
-            <span class="pallette-btn" style="background:green;">&nbsp;</span>
-            <span class="pallette-btn" style="background:yellow;">&nbsp;</span>
-            <span class="pallette-btn" style="background:orange;">&nbsp;</span>
-            <span class="pallette-btn" style="background:violet;">&nbsp;</span>
+            <span id='current-color-indicator'>&nbsp;</span>
+
+            <button class="pallette-btn" style="background:black;">&nbsp;</button>
+            <button class="pallette-btn" style="background:red;">&nbsp;</button>
+            <button class="pallette-btn" style="background:blue;">&nbsp;</button>
+            <button class="pallette-btn" style="background:green;">&nbsp;</button>
+            <button class="pallette-btn" style="background:yellow;">&nbsp;</button>
+            <button class="pallette-btn" style="background:orange;">&nbsp;</button>
+            <button class="pallette-btn" style="background:violet;">&nbsp;</button>
+
+            <div id='control-menu'>
+                <span>
+                    Stroke width:
+                    <select id='stroke-width-menu'>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                        <option value="8">8</option>
+                        <option value="16">16</option>
+                        <option value="32">32</option>
+                    </select>
+                    <button id='pen-btn'><img src='public/images/pen.svg' /></button>
+                    <button id='eraser-btn'><img src='public/images/eraser.svg' /></button>
+                </span>
+
+            </div>
+
         </div>
     </div>
     <hr>
@@ -31,7 +51,7 @@
     <script type="module" src="/public/js/draw.js"></script>
     <script type="module" src="/public/js/utility.js"></script>
     <script type="module" src="/public/js/priority-queue.js"></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
 </body>

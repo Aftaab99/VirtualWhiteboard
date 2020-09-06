@@ -3,28 +3,30 @@ const ctx = canvas.getContext('2d');
 const coords = { x: 0, y: 0 }
 var keeping_painting = false;
 var stroke_color = 'black';
-// const {PriorityQueue} = require('./priority-queue')
-// const {getParams} = require('./utility')
+var current_mode = 'pen';
+var stroke_size = 1;
 
 import PriorityQueue from './priority-queue.js'
-import {getParams} from './utility.js'
+import { getParams } from './utility.js'
 
 window.addEventListener('load', () => {
 
     const socket = io();
     const pq = new PriorityQueue();
     const roomId = getParams(window.location.href).roomId;
+    const currentColorIndicator = document.getElementById('current-color-indicator');
+
     socket.emit('create-room', roomId);
 
     function sendWhiteboardData() {
         let whiteboardContents = canvas.toDataURL('image/png', 0.9);
-        let sendObj = { roomId: roomId, data: whiteboardContents, time: Date.now()};
+        let sendObj = { roomId: roomId, data: whiteboardContents, time: Date.now() };
         socket.emit("send-data", sendObj);
     }
 
     function setWhiteboardData(dataUrl) {
         let img = new Image();
-        img.onload=() => {
+        img.onload = () => {
             ctx.fillStyle = 'white';
             ctx.drawImage(img, 0, 0);
         }
@@ -53,6 +55,7 @@ window.addEventListener('load', () => {
     canvas.height = window.innerHeight;
     document.addEventListener('mousedown', (event) => {
         keeping_painting = true;
+        ctx.lineWidth = stroke_size;
         if (interval == null)
             interval = setInterval(sendWhiteboardData, 250);
         coords.x = event.clientX - canvas.offsetLeft;
@@ -61,11 +64,26 @@ window.addEventListener('load', () => {
         ctx.moveTo(coords.x, coords.y);
     });
 
+    document.getElementById('eraser-btn').addEventListener('click', (e) => {
+        current_mode = 'eraser';
+    })
+
+    document.getElementById('pen-btn').addEventListener('click', (e) => {
+        current_mode = 'pen';
+    })
+
     document.querySelectorAll('.pallette-btn').forEach(item => {
         item.addEventListener('click', event => {
             stroke_color = event.target.style.backgroundColor;
+            currentColorIndicator.style.setProperty('background-color', stroke_color);
+            current_mode = 'pen';
         })
     })
+
+    document.getElementById('stroke-width-menu').addEventListener('change', (e)=>{
+        console.log('yooo')
+        stroke_size = parseInt(document.getElementById('stroke-width-menu').value);
+    });
 
     document.addEventListener('mouseup', (event) => {
         keeping_painting = false;
@@ -81,16 +99,24 @@ window.addEventListener('load', () => {
         coords.x = event.clientX - canvas.offsetLeft;
         coords.y = event.clientY - canvas.offsetTop;
 
-        ctx.strokeStyle = stroke_color;
-        ctx.lineTo(coords.x, coords.y);
-        ctx.stroke();
+        if (current_mode == 'pen') {
+            ctx.strokeStyle = stroke_color;
+            ctx.lineTo(coords.x, coords.y);
+            ctx.stroke();
+        }
+        else{
+            ctx.strokeStyle = 'white';
+            ctx.lineTo(coords.x, coords.y);
+            ctx.stroke();
+            ctx.strokeStyle = stroke_color;
+        }
         // ctx.closePath();
     });
     window.addEventListener('resize', (event) => {
         resizeWithoutClearing();
     });
 
-    socket.on('set-initial-whiteboard', dataUrl=>{
+    socket.on('set-initial-whiteboard', dataUrl => {
         setWhiteboardData(dataUrl);
     })
     socket.on('receive-data', data => {
@@ -100,7 +126,7 @@ window.addEventListener('load', () => {
     });
 
     let updateBoardInterval = setInterval(() => {
-        if(!pq.isEmpty()){
+        if (!pq.isEmpty()) {
             let data = pq.pop();
             setWhiteboardData(data.data);
         }

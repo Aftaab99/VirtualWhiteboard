@@ -4,10 +4,22 @@
     border-style: solid;
     border-width: 1px;
     font-size: 30px;
+    width: 50px;
     padding-left: 30px;
-    background-color: red;
-    cursor:pointer;
+    cursor: pointer;
+    outline: 0;
+}
 
+#current-color-indicator {
+    border-radius: 100px;
+    border: 1px;
+    font-size: 25px;
+    padding-left: 20px;
+    border-color: grey;
+    border-style: solid;
+    border-width: 1px;
+    background-color: black;
+    margin-right: 10px;
 }
 
 body {
@@ -25,3 +37,41 @@ body {
     padding-top: 10px;
     display: block;
 }
+
+#eraser-btn, #pen-btn {
+    background-color: Transparent;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    float: right;
+}
+
+#control-menu {
+    display: inline;
+}
+
+#control-menu>span {
+    float: right;
+    font-size: 22px;
+}
+
+#control-menu>span>select {
+    margin-right: 50px;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+#eraser-btn:focus, #pen-btn:focus {
+    outline: 100;
+    outline-color: Highlight;
+}
+
+.pallette-btn:focus {
+    border-width: 2px;
+    border-color: Highlight;
+}
+
+img {
+    width: 30px;
+}
+

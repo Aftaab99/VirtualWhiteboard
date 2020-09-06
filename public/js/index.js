@@ -1,7 +1,8 @@
 window.addEventListener('load', (ev) => {
     const inputField = document.getElementById('host-name');
     const createRoomBtn = document.getElementById('create-room-btn');
-
+    const copyBtn = document.getElementById('copy-link-btn');
+    const roomLinkField = document.getElementById('room-link');
     createRoomBtn.addEventListener('click', (e) => {
         e.preventDefault();
         let inputText = inputField.value;
@@ -29,4 +30,10 @@ window.addEventListener('load', (ev) => {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({ username: inputText }));
     });
+
+    copyBtn.addEventListener('click', (e)=>{
+        roomLinkField.select();
+        roomLinkField.setSelectionRange(0, 150);
+        document.execCommand("copy");
+    })
 })
