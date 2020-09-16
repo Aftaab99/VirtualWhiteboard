@@ -38,12 +38,13 @@ body {
     display: block;
 }
 
-#eraser-btn, #pen-btn {
+#eraser-btn, #pen-btn, #text-btn {
     background-color: Transparent;
     border: none;
     cursor:pointer;
     overflow: hidden;
     float: right;
+    margin-left: 5px;
 }
 
 #control-menu {
@@ -61,7 +62,7 @@ body {
     font-size: 16px;
 }
 
-#eraser-btn:focus, #pen-btn:focus {
+#eraser-btn:focus, #pen-btn:focus, #text-btn:focus {
     outline: 100;
     outline-color: Highlight;
 }
@@ -75,3 +76,24 @@ img {
     width: 30px;
 }
 
+canvas {
+    position: absolute;
+}
+
+#text-box{
+    position: absolute;
+    visibility: hidden;
+    left: 200px;
+    top: 200px;
+    z-index: 10;
+}
+
+#text-area {
+    display: block;
+    font-size: 24px;
+}
+
+#text-box-submit-btn {
+    margin-top: 5px;
+    display: block;
+}

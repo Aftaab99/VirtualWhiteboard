@@ -15,7 +15,7 @@
 
 <body>
     <div class="header">
-        <h1 id='main-heading'>Collabrative Virtual Whiteboard</h1>
+        <h1 id='main-heading'>Collaborative Virtual Whiteboard</h1>
         <div>
             <span id='current-color-indicator'>&nbsp;</span>
 
@@ -38,16 +38,32 @@
                         <option value="16">16</option>
                         <option value="32">32</option>
                     </select>
+                    Font size:
+                    <select id='font-size-menu'>
+                        <option value="1">24</option>
+                        <option value="2">32</option>
+                        <option value="4">48</option>
+                        <option value="8">64</option>
+                    </select>
+
                     <button id='pen-btn'><img src='public/images/pen.svg' /></button>
                     <button id='eraser-btn'><img src='public/images/eraser.svg' /></button>
+                    <button id='text-btn'><img src='public/images/textedit.svg' /></button>
+
                 </span>
 
             </div>
 
         </div>
     </div>
+
     <hr>
     <canvas id="canvas"></canvas>
+    <div id='text-box'>
+        <textarea id='text-area' rows="5" cols="20" maxlength="100"></textarea>
+        <button id='text-box-submit-btn'><img src='/public/images/check.svg' height='20px' /></button>
+    </div>
+
     <script type="module" src="/public/js/draw.js"></script>
     <script type="module" src="/public/js/utility.js"></script>
     <script type="module" src="/public/js/priority-queue.js"></script>

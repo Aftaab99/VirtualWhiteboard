@@ -1,10 +1,13 @@
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
-const coords = { x: 0, y: 0 }
+const coords = { x: 0, y: 0 };
+const textBoxCoords = { x: 0, y: 0 };
+
 var keeping_painting = false;
 var stroke_color = 'black';
 var current_mode = 'pen';
 var stroke_size = 1;
+var font_size = 24;
 
 import PriorityQueue from './priority-queue.js'
 import { getParams } from './utility.js'
@@ -15,6 +18,10 @@ window.addEventListener('load', () => {
     const pq = new PriorityQueue();
     const roomId = getParams(window.location.href).roomId;
     const currentColorIndicator = document.getElementById('current-color-indicator');
+
+    const textbox = document.getElementById('text-box');
+    const textarea = document.getElementById('text-area');
+    const textSubmitBtn = document.getElementById('text-box-submit-btn');
 
     socket.emit('create-room', roomId);
 
@@ -65,11 +72,18 @@ window.addEventListener('load', () => {
     });
 
     document.getElementById('eraser-btn').addEventListener('click', (e) => {
+        textbox.style.setProperty('visibility', 'hidden');
         current_mode = 'eraser';
     })
 
     document.getElementById('pen-btn').addEventListener('click', (e) => {
+        textbox.style.setProperty('visibility', 'hidden');
         current_mode = 'pen';
+    })
+
+    document.getElementById('text-btn').addEventListener('click', (e) => {
+        textbox.style.setProperty('visibility', 'hidden');
+        current_mode = 'text';
     })
 
     document.querySelectorAll('.pallette-btn').forEach(item => {
@@ -80,12 +94,30 @@ window.addEventListener('load', () => {
         })
     })
 
-    document.getElementById('stroke-width-menu').addEventListener('change', (e)=>{
+    document.getElementById('stroke-width-menu').addEventListener('change', (e) => {
         console.log('yooo')
-        stroke_size = parseInt(document.getElementById('stroke-width-menu').value);
+        stroke_size = parseInt(e.target.selectedOptions[0].text);
     });
 
+    document.getElementById('font-size-menu').addEventListener('change', (e) => {
+        console.log('yooo')
+        font_size = parseInt(e.target.selectedOptions[0].text);
+        textarea.style.setProperty('font-size', font_size + 'px');
+
+    });
+
+    canvas.addEventListener('click', (e) => {
+        if (current_mode != 'text')
+            return;
+        textBoxCoords.x = event.clientX;
+        textBoxCoords.y = event.clientY;
+        textbox.style.setProperty('font-size', font_size + 'px');
+        textbox.style.setProperty('left', textBoxCoords.x + 'px');
+        textbox.style.setProperty('top', textBoxCoords.y + 'px');
+        textbox.style.setProperty('visibility', 'visible');
+    });
     document.addEventListener('mouseup', (event) => {
+
         keeping_painting = false;
         ctx.closePath();
         if (interval) {
@@ -94,6 +126,7 @@ window.addEventListener('load', () => {
         }
     });
     document.addEventListener('mousemove', (event) => {
+
         if (!keeping_painting) return;
         // New position
         coords.x = event.clientX - canvas.offsetLeft;
@@ -104,7 +137,7 @@ window.addEventListener('load', () => {
             ctx.lineTo(coords.x, coords.y);
             ctx.stroke();
         }
-        else{
+        else {
             ctx.strokeStyle = 'white';
             ctx.lineTo(coords.x, coords.y);
             ctx.stroke();
@@ -112,6 +145,18 @@ window.addEventListener('load', () => {
         }
         // ctx.closePath();
     });
+
+    textSubmitBtn.addEventListener('click', (e) => {
+        let text = textarea.value;
+        textbox.style.setProperty('visibility', 'hidden');
+        ctx.fillStyle = stroke_color;
+        ctx.font = font_size + "px Arial";
+        ctx.fillText(text, textBoxCoords.x - canvas.offsetLeft, textBoxCoords.y - canvas.offsetTop);
+
+        if (interval == null)
+            sendWhiteboardData();
+    })
+
     window.addEventListener('resize', (event) => {
         resizeWithoutClearing();
     });
