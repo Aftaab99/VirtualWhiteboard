@@ -81,7 +81,6 @@ const server = http.createServer((req, res) => {
                 err_msg: "You already have a room"
             }))
         }
-        console.log(clients)
     }
 
     else if(imagesPattern.exec(req.url)){
@@ -111,7 +110,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('send-data', (data) => {
-        console.log(`Received data from ${data.roomId} at ${data.time}`);
         latestRoomState.set(data.roomId, data.data);
         socket.broadcast.to(data.roomId).emit('receive-data', data);
     });

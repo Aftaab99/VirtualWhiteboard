@@ -14,11 +14,11 @@
 </head>
 
 <body>
-    <div class="header">
+    <div id="header">
         <h1 id='main-heading'>Collaborative Virtual Whiteboard</h1>
-        <div>
-            <span id='current-color-indicator'>&nbsp;</span>
 
+        <span id="top-menu">
+            <span id='current-color-indicator'>&nbsp;</span>
             <button class="pallette-btn" style="background:black;">&nbsp;</button>
             <button class="pallette-btn" style="background:red;">&nbsp;</button>
             <button class="pallette-btn" style="background:blue;">&nbsp;</button>
@@ -26,35 +26,38 @@
             <button class="pallette-btn" style="background:yellow;">&nbsp;</button>
             <button class="pallette-btn" style="background:orange;">&nbsp;</button>
             <button class="pallette-btn" style="background:violet;">&nbsp;</button>
+        </span>
 
-            <div id='control-menu'>
-                <span>
-                    Stroke width:
-                    <select id='stroke-width-menu'>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="4">4</option>
-                        <option value="8">8</option>
-                        <option value="16">16</option>
-                        <option value="32">32</option>
-                    </select>
-                    Font size:
-                    <select id='font-size-menu'>
-                        <option value="1">24</option>
-                        <option value="2">32</option>
-                        <option value="4">48</option>
-                        <option value="8">64</option>
-                    </select>
 
-                    <button id='pen-btn'><img src='public/images/pen.svg' /></button>
-                    <button id='eraser-btn'><img src='public/images/eraser.svg' /></button>
-                    <button id='text-btn'><img src='public/images/textedit.svg' /></button>
+        <span id="control-menu">
+            <span id='stroke-box'>
+                Stroke width:
+                <select id='stroke-width-menu'>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                </select>
+            </span>
+            <span id='font-box'>
+                Font size:
+                <select id='font-size-menu'>
+                    <option value="1">24</option>
+                    <option value="2">32</option>
+                    <option value="4">48</option>
+                    <option value="8">64</option>
+                </select>
+            </span>
+            <span id='btn-box'>
+                <button id='pen-btn'><img src='public/images/pen.svg' /></button>
+                <button id='eraser-btn'><img src='public/images/eraser.svg' /></button>
+                <button id='text-btn'><img src='public/images/textedit.svg' /></button>
+            </span>
+        </span>
 
-                </span>
 
-            </div>
-
-        </div>
     </div>
 
     <hr>

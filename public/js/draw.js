@@ -24,7 +24,6 @@ window.addEventListener('load', () => {
     const textSubmitBtn = document.getElementById('text-box-submit-btn');
 
     socket.emit('create-room', roomId);
-
     function sendWhiteboardData() {
         let whiteboardContents = canvas.toDataURL('image/png', 0.9);
         let sendObj = { roomId: roomId, data: whiteboardContents, time: Date.now() };
@@ -38,7 +37,6 @@ window.addEventListener('load', () => {
             ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
         }
         img.src = dataUrl;
-        lastImageUrl = dataUrl
     }
 
     function resizeWithoutClearing() {
@@ -60,7 +58,7 @@ window.addEventListener('load', () => {
     // resizeWithoutClearing();
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    document.addEventListener('mousedown', (event) => {
+    canvas.addEventListener('mousedown', (event) => {
         event.preventDefault();
         event.stopPropagation();
         keeping_painting = true;
@@ -116,7 +114,7 @@ window.addEventListener('load', () => {
         textbox.style.setProperty('top', textBoxCoords.y + 'px');
         textbox.style.setProperty('visibility', 'visible');
     });
-    document.addEventListener('mouseup', (event) => {
+    canvas.addEventListener('mouseup', (event) => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -127,7 +125,7 @@ window.addEventListener('load', () => {
             interval = null;
         }
     });
-    document.addEventListener('mousemove', (event) => {
+    canvas.addEventListener('mousemove', (event) => {
         event.preventDefault();
 
         if (!keeping_painting) return;
@@ -182,7 +180,7 @@ window.addEventListener('load', () => {
     canvas.addEventListener("touchstart", function (e) {
         if(e.target == canvas)
             e.preventDefault();
-        mousePos = getTouchPos(canvas, e);
+        console.log('start')
         var touch = e.touches[0];
         var mouseEvent = new MouseEvent("mousedown", {
             clientX: touch.clientX,
@@ -190,6 +188,7 @@ window.addEventListener('load', () => {
         });
         canvas.dispatchEvent(mouseEvent);
     }, false);
+
     canvas.addEventListener("touchend", function (e) {
         if(e.target == canvas)
             e.preventDefault();
@@ -208,13 +207,7 @@ window.addEventListener('load', () => {
     }, false);
 
     // Get the position of a touch relative to the canvas
-    function getTouchPos(canvasDom, touchEvent) {
-        var rect = canvasDom.getBoundingClientRect();
-        return {
-            x: touchEvent.touches[0].clientX - rect.left,
-            y: touchEvent.touches[0].clientY - rect.top
-        };
-    }
+    
 
 });
 
