@@ -1,14 +1,16 @@
 ## Virtual Whiteboard
-A collaborative virtual whiteboard made using NodeJs and Socket.io
+A collaborative virtual whiteboard made using NodeJs and Socket.io. 
+
+Check out the [web demo](https://virtualwhiteboard.herokuapp.com/).
+
+
+### How it works
+Create a room and visit the whiteboard at the room link. You can also share the link to others and both of you will be able to edit the whiteboard in realtime.
 
 Starting up the dev server
 
     npm install
     npm run dev
-
-
-### Screenshots
-![Screenshot 1](https://github.com/Aftaab99/VirtualWhiteboard/blob/master/screenshots/ss1.png)
 
 ### Icon Attributions
 A big thank you to the following authors for the free icons

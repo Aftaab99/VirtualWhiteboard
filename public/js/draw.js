@@ -114,6 +114,8 @@ window.addEventListener('load', () => {
         textbox.style.setProperty('top', textBoxCoords.y + 'px');
         textbox.style.setProperty('visibility', 'visible');
     });
+
+
     canvas.addEventListener('mouseup', (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -180,12 +182,18 @@ window.addEventListener('load', () => {
     canvas.addEventListener("touchstart", function (e) {
         if(e.target == canvas)
             e.preventDefault();
-        console.log('start')
+        
         var touch = e.touches[0];
         var mouseEvent = new MouseEvent("mousedown", {
             clientX: touch.clientX,
             clientY: touch.clientY
         });
+        if(current_mode=='text'){
+            mouseEvent = new MouseEvent("click", {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+        }
         canvas.dispatchEvent(mouseEvent);
     }, false);
 
