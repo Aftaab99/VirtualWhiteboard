@@ -72,7 +72,7 @@ const server = http.createServer((req, res) => {
             clients.set(client_addr, room_id)
             console.log('returning ' + room_id)
             res.writeHead(200, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ room_id: room_id, err: false, url: `http:\\\\${config.SERVER_HOSTNAME}:${config.PORT}\\whiteboard?roomId=${room_id}` }))
+            res.end(JSON.stringify({ room_id: room_id, err: false, url: `${config.SERVER_ADDR}/whiteboard?roomId=${room_id}` }))
         }
         else {
             res.writeHead(200, { 'Content-Type': 'application/json' })
@@ -116,5 +116,5 @@ io.on('connection', (socket) => {
         socket.broadcast.to(data.roomId).emit('receive-data', data);
     });
 });
-console.log(config.PORT);
-server.listen(config.PORT, config.SERVER_HOSTNAME, () => { console.log('Listening on port 5000') });
+
+server.listen(config.PORT, '0.0.0.0', () => { console.log('Listening on port 5000') });
